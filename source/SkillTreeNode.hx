@@ -1,7 +1,5 @@
 package;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.text.FlxText;
@@ -14,20 +12,25 @@ class SkillTreeNode extends FlxGroup
 	public var columnIndex = 0;
 
 	public var maxPoints = 0;
+
+	var pointsSpent(default, set) = 0;
+
 	public var pointsRequired = 0;
 
 	public var button:FlxButton;
+	public var pointsLabel:FlxText;
 	public var tooltip:Tooltip;
-
-	var pointsLabel:FlxText;
 
 	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, tooltip:Tooltip)
 	{
 		super();
 
-		button = new FlxButton();
+		button = new FlxButton(0, 0, null, spendPoint);
 		button.makeGraphic(32, 32, FlxColor.WHITE);
 		add(button);
+
+		pointsLabel = new FlxText(button.x, button.y + button.frameHeight, 200, '0/$maxPoints');
+		add(pointsLabel);
 
 		this.rowIndex = row;
 		this.columnIndex = column;
@@ -39,6 +42,22 @@ class SkillTreeNode extends FlxGroup
 		SkillTree.tooltips.add(tooltip);
 
 		FlxMouseEventManager.add(button, null, null, onHover, onExit);
+	}
+
+	function set_pointsSpent(value)
+	{
+		pointsSpent = value;
+		pointsLabel.text = '$pointsSpent/$maxPoints';
+		return value;
+	}
+
+	function spendPoint()
+	{
+		if (pointsSpent + 1 > maxPoints)
+			return;
+
+		pointsSpent++;
+		SkillTree.availablePoints--;
 	}
 
 	function onHover(_)

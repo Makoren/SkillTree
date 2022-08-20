@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 
 /**
 	To make this skill tree reusable, you would need to create an external data source out of structs or JSON data or whatever else.
@@ -11,11 +12,25 @@ class SkillTree
 {
 	public static var nodes = new FlxTypedGroup<SkillTreeNode>();
 	public static var tooltips = new FlxTypedGroup<Tooltip>();
+	public static var availablePoints(default, set) = 0;
+
+	static var availablePointsLabel:FlxText;
+
+	// TODO: Lock talents by storing how many talents have been spent, and comparing that value to each node's pointsRequired field.
+	// TODO: Create prerequisite talents by adding a field that references another skill, and check if that skill has been unlocked. You
+	// can do this by referencing another node, or by storing the name of a skill and searching the nodes group for that skill.
 
 	public function new()
 	{
 		FlxG.state.add(nodes);
 		FlxG.state.add(tooltips);
+
+		availablePointsLabel = new FlxText(0, 0, 200, "", 16);
+		availablePointsLabel.font = "Roboto";
+		availablePointsLabel.x = FlxG.width - availablePointsLabel.frameWidth - 20;
+		availablePointsLabel.y = 20;
+		availablePoints = 51;
+		FlxG.state.add(availablePointsLabel);
 
 		nodes.add(new SkillTreeNode(0, 0, 3, 0, new Tooltip("Improved Heroic Strike", "Reduces the cost of your Heroic Strike ability by 1 rage point.")));
 		nodes.add(new SkillTreeNode(0, 1, 5, 0, new Tooltip("Deflection", "Increases your parry chance by 1%.")));
@@ -63,6 +78,15 @@ class SkillTree
 		{
 			node.button.x = 30 + (node.columnIndex * 60);
 			node.button.y = 30 + (node.rowIndex * 60);
+			node.pointsLabel.x = node.button.x;
+			node.pointsLabel.y = node.button.y + node.button.frameHeight;
 		}
+	}
+
+	static function set_availablePoints(value)
+	{
+		availablePoints = value;
+		availablePointsLabel.text = 'Available Points: $availablePoints';
+		return value;
 	}
 }
