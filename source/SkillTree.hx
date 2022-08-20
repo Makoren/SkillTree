@@ -10,6 +10,8 @@ import flixel.text.FlxText;
 **/
 class SkillTree
 {
+	// In a bigger game these should probably be made regular variables, and the SkillTree class should be a singleton, otherwise you
+	// have a bunch of global static variables that aren't being cleaned up. Unless I intend to make the skill tree available at all times.
 	public static var nodes = new FlxTypedGroup<SkillTreeNode>();
 	public static var tooltips = new FlxTypedGroup<Tooltip>();
 	public static var availablePoints(default, set) = 0;
