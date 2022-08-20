@@ -1,12 +1,14 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
-class SkillTreeNode extends FlxButton
+class SkillTreeNode extends FlxGroup
 {
 	public var rowIndex = 0;
 	public var columnIndex = 0;
@@ -14,13 +16,19 @@ class SkillTreeNode extends FlxButton
 	public var maxPoints = 0;
 	public var pointsRequired = 0;
 
-	var pointsLabel:FlxText;
+	public var button:FlxButton;
+	public var tooltip:Tooltip;
 
-	var tooltip:Tooltip;
+	var pointsLabel:FlxText;
 
 	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, tooltip:Tooltip)
 	{
 		super();
+
+		button = new FlxButton();
+		button.makeGraphic(32, 32, FlxColor.WHITE);
+		add(button);
+
 		this.rowIndex = row;
 		this.columnIndex = column;
 
@@ -28,19 +36,18 @@ class SkillTreeNode extends FlxButton
 		this.pointsRequired = pointsRequired;
 
 		this.tooltip = tooltip;
-		FlxG.state.add(tooltip);
-		makeGraphic(32, 32, FlxColor.WHITE);
+		SkillTree.tooltips.add(tooltip);
 
-		FlxMouseEventManager.add(this, null, null, onHover, onExit);
+		FlxMouseEventManager.add(button, null, null, onHover, onExit);
 	}
 
-	function onHover(node:SkillTreeNode)
+	function onHover(_)
 	{
 		// Show the tooltip at the bottom right corner of the node.
-		tooltip.show(Std.int(node.x + node.frameWidth), Std.int(node.y + node.frameHeight));
+		tooltip.show(Std.int(button.x + button.frameWidth), Std.int(button.y + button.frameHeight));
 	}
 
-	function onExit(node:SkillTreeNode)
+	function onExit(_)
 	{
 		tooltip.hide();
 	}

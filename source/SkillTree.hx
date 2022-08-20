@@ -9,11 +9,13 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 **/
 class SkillTree
 {
-	var nodes = new FlxTypedGroup<SkillTreeNode>();
+	public static var nodes = new FlxTypedGroup<SkillTreeNode>();
+	public static var tooltips = new FlxTypedGroup<Tooltip>();
 
 	public function new()
 	{
 		FlxG.state.add(nodes);
+		FlxG.state.add(tooltips);
 
 		nodes.add(new SkillTreeNode(0, 0, 3, 0, new Tooltip("Improved Heroic Strike", "Reduces the cost of your Heroic Strike ability by 1 rage point.")));
 		nodes.add(new SkillTreeNode(0, 1, 5, 0, new Tooltip("Deflection", "Increases your parry chance by 1%.")));
@@ -59,8 +61,8 @@ class SkillTree
 	{
 		for (node in nodes.members)
 		{
-			node.x = 30 + (node.columnIndex * 60);
-			node.y = 30 + (node.rowIndex * 60);
+			node.button.x = 30 + (node.columnIndex * 60);
+			node.button.y = 30 + (node.rowIndex * 60);
 		}
 	}
 }
