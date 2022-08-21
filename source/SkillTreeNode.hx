@@ -21,12 +21,17 @@ class SkillTreeNode extends FlxGroup
 	public var pointsLabel:FlxText;
 	public var tooltip:Tooltip;
 
-	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, prerequisiteNode:String = "", tooltip:Tooltip)
+	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, prerequisiteNode:String = "", imagePath:String = "", tooltip:Tooltip)
 	{
 		super();
 
 		button = new FlxButton(0, 0, null, spendPoint);
-		button.makeGraphic(32, 32, FlxColor.WHITE);
+
+		if (imagePath != "")
+			button.loadGraphic(imagePath);
+		else
+			button.makeGraphic(32, 32, FlxColor.WHITE);
+
 		add(button);
 
 		pointsLabel = new FlxText(button.x, button.y + button.frameHeight, 200, '0/$maxPoints');
@@ -42,6 +47,7 @@ class SkillTreeNode extends FlxGroup
 		this.tooltip = tooltip;
 		SkillTree.tooltips.add(tooltip);
 
+		// TODO: When custom icons are added, this should saturate the image (or load a saturated image).
 		if (checkIfLocked())
 			button.color = FlxColor.GRAY;
 

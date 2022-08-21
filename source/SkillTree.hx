@@ -31,10 +31,6 @@ class SkillTree
 
 	static var availablePointsLabel:FlxText;
 
-	// TODO: Create prerequisite talents by adding a field that references another skill, and check if that skill has been unlocked.
-	// Favourite idea right now is making a map and adding each node to that map as a value, with the skill name as the key.
-	// This way you just need to store a string in the node itself and search the map for that skill's name.
-
 	public function new()
 	{
 		FlxG.state.add(lines);
@@ -49,7 +45,7 @@ class SkillTree
 		FlxG.state.add(availablePointsLabel);
 
 		// Nodes
-		var currentNode = new SkillTreeNode(0, 0, 3, 0,
+		var currentNode = new SkillTreeNode(0, 0, 3, 0, "", AssetPaths.icon1__png,
 			new Tooltip("Improved Heroic Strike", "Reduces the cost of your Heroic Strike ability by 1 rage point."));
 		nodes.add(currentNode);
 		nodeMap["Improved Heroic Strike"] = currentNode;
