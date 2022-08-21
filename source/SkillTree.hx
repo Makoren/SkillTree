@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 
@@ -14,11 +15,12 @@ class SkillTree
 	// have a bunch of global static variables that aren't being cleaned up. Unless I intend to make the skill tree available at all times.
 	public static var nodes = new FlxTypedGroup<SkillTreeNode>();
 	public static var tooltips = new FlxTypedGroup<Tooltip>();
+
 	public static var availablePoints(default, set) = 0;
+	public static var totalPointsSpent = -1;
 
 	static var availablePointsLabel:FlxText;
 
-	// TODO: Lock talents by storing how many talents have been spent, and comparing that value to each node's pointsRequired field.
 	// TODO: Create prerequisite talents by adding a field that references another skill, and check if that skill has been unlocked. You
 	// can do this by referencing another node, or by storing the name of a skill and searching the nodes group for that skill.
 
@@ -89,6 +91,7 @@ class SkillTree
 	{
 		availablePoints = value;
 		availablePointsLabel.text = 'Available Points: $availablePoints';
+		totalPointsSpent++;
 		return value;
 	}
 }

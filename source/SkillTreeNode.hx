@@ -12,10 +12,9 @@ class SkillTreeNode extends FlxGroup
 	public var columnIndex = 0;
 
 	public var maxPoints = 0;
+	public var pointsRequired = 0;
 
 	var pointsSpent(default, set) = 0;
-
-	public var pointsRequired = 0;
 
 	public var button:FlxButton;
 	public var pointsLabel:FlxText;
@@ -41,6 +40,9 @@ class SkillTreeNode extends FlxGroup
 		this.tooltip = tooltip;
 		SkillTree.tooltips.add(tooltip);
 
+		if (checkIfLocked())
+			button.color = FlxColor.GRAY;
+
 		FlxMouseEventManager.add(button, null, null, onHover, onExit);
 	}
 
@@ -51,13 +53,34 @@ class SkillTreeNode extends FlxGroup
 		return value;
 	}
 
+	public function checkIfLocked():Bool
+	{
+		return SkillTree.totalPointsSpent < pointsRequired;
+	}
+
+	function updateButtonColours()
+	{
+		for (node in SkillTree.nodes.members)
+		{
+			if (node.checkIfLocked())
+				node.button.color = FlxColor.GRAY;
+			else
+				node.button.color = FlxColor.WHITE;
+		}
+	}
+
 	function spendPoint()
 	{
+		if (checkIfLocked())
+			return;
+
 		if (pointsSpent + 1 > maxPoints)
 			return;
 
 		pointsSpent++;
 		SkillTree.availablePoints--;
+
+		updateButtonColours();
 	}
 
 	function onHover(_)
