@@ -13,6 +13,7 @@ class SkillTreeNode extends FlxGroup
 
 	public var maxPoints = 0;
 	public var pointsRequired = 0;
+	public var prerequisiteNode = "";
 
 	var pointsSpent(default, set) = 0;
 
@@ -20,7 +21,7 @@ class SkillTreeNode extends FlxGroup
 	public var pointsLabel:FlxText;
 	public var tooltip:Tooltip;
 
-	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, tooltip:Tooltip)
+	public function new(row:Int, column:Int, maxPoints:Int, pointsRequired:Int, prerequisiteNode:String = "", tooltip:Tooltip)
 	{
 		super();
 
@@ -36,6 +37,7 @@ class SkillTreeNode extends FlxGroup
 
 		this.maxPoints = maxPoints;
 		this.pointsRequired = pointsRequired;
+		this.prerequisiteNode = prerequisiteNode;
 
 		this.tooltip = tooltip;
 		SkillTree.tooltips.add(tooltip);
@@ -55,7 +57,15 @@ class SkillTreeNode extends FlxGroup
 
 	public function checkIfLocked():Bool
 	{
-		return SkillTree.totalPointsSpent < pointsRequired;
+		if (SkillTree.totalPointsSpent < pointsRequired)
+			return true;
+
+		// check if the prerequisite node's pointsSpent is equal or greater than its maxPoints
+		var node = SkillTree.nodeMap[prerequisiteNode];
+		if (node != null && node.pointsSpent < node.maxPoints)
+			return true;
+
+		return false;
 	}
 
 	function updateButtonColours()

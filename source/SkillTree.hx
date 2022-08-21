@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 /**
 	To make this skill tree reusable, you would need to create an external data source out of structs or JSON data or whatever else.
@@ -83,12 +84,12 @@ class SkillTree
 		nodes.add(currentNode);
 		nodeMap["Improved Overpower"] = currentNode;
 
-		currentNode = new SkillTreeNode(2, 1, 1, 10,
+		currentNode = new SkillTreeNode(2, 1, 1, 10, "Tactical Mastery",
 			new Tooltip("Anger Management", "Increases the time required for your rage to decay while out of combat by 30%."));
 		nodes.add(currentNode);
 		nodeMap["Anger Management"] = currentNode;
 
-		currentNode = new SkillTreeNode(2, 2, 3, 10,
+		currentNode = new SkillTreeNode(2, 2, 3, 10, "Improved Rend",
 			new Tooltip("Deep Wounds", "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 12 sec."));
 		nodes.add(currentNode);
 		nodeMap["Deep Wounds"] = currentNode;
@@ -100,7 +101,7 @@ class SkillTree
 		nodes.add(currentNode);
 		nodeMap["Two-Handed Weapon Specialization"] = currentNode;
 
-		currentNode = new SkillTreeNode(3, 2, 2, 15,
+		currentNode = new SkillTreeNode(3, 2, 2, 15, "Deep Wounds",
 			new Tooltip("Impale", "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 10%."));
 		nodes.add(currentNode);
 		nodeMap["Impale"] = currentNode;
@@ -136,7 +137,7 @@ class SkillTree
 		nodes.add(currentNode);
 		nodeMap["Improved Hamstring"] = currentNode;
 
-		currentNode = new SkillTreeNode(6, 1, 1, 30,
+		currentNode = new SkillTreeNode(6, 1, 1, 30, "Sweeping Strikes",
 			new Tooltip("Mortal Strike",
 				"A vicious strike that deals weapon damage plus 85 and wounds the target, reducing the effectiveness of any healing by 50% for 10 sec."));
 		nodes.add(currentNode);
@@ -145,6 +146,10 @@ class SkillTree
 		repositionNodes();
 
 		// Lines
+		createLine("Improved Rend", "Deep Wounds");
+		createLine("Deep Wounds", "Impale");
+		createLine("Tactical Mastery", "Anger Management");
+		createLine("Sweeping Strikes", "Mortal Strike");
 	}
 
 	/**
@@ -159,6 +164,19 @@ class SkillTree
 			node.pointsLabel.x = node.button.x;
 			node.pointsLabel.y = node.button.y + node.button.frameHeight;
 		}
+	}
+
+	/**
+		Creates a vertical line between two nodes.
+	**/
+	function createLine(sourceNode:String, targetNode:String)
+	{
+		var lineNodePosition = nodeMap[sourceNode].button.getMidpoint();
+		var targetLineNodePosition = nodeMap[targetNode].button.getMidpoint();
+		var line = new FlxSprite(lineNodePosition.x - 5, lineNodePosition.y);
+		var lineHeight = Std.int(targetLineNodePosition.y - lineNodePosition.y);
+		line.makeGraphic(10, lineHeight, FlxColor.RED);
+		lines.add(line);
 	}
 
 	static function set_availablePoints(value)
