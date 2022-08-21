@@ -87,6 +87,9 @@ class SkillTreeNode extends FlxGroup
 		if (pointsSpent + 1 > maxPoints)
 			return;
 
+		if (SkillTree.availablePoints <= 0)
+			return;
+
 		pointsSpent++;
 		SkillTree.availablePoints--;
 

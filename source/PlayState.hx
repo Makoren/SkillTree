@@ -10,6 +10,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 		FlxG.mouse.useSystemCursor = true;
+		FlxG.camera.antialiasing = true;
 		FlxG.plugins.add(new FlxMouseEventManager());
 
 		var _ = new SkillTree();
