@@ -48,8 +48,9 @@ class SkillTreeNode extends FlxGroup
 		SkillTree.tooltips.add(tooltip);
 
 		// TODO: When custom icons are added, this should saturate the image (or load a saturated image).
+		// Look into the Flixel demo for blend modes, and see if the OpenFL version of blend modes works the same way.
 		if (checkIfLocked())
-			button.color = FlxColor.GRAY;
+			button.color = 0x333333;
 
 		FlxMouseEventManager.add(button, null, null, onHover, onExit);
 	}
@@ -79,7 +80,7 @@ class SkillTreeNode extends FlxGroup
 		for (node in SkillTree.nodes.members)
 		{
 			if (node.checkIfLocked())
-				node.button.color = FlxColor.GRAY;
+				node.button.color = 0x333333;
 			else
 				node.button.color = FlxColor.WHITE;
 		}
