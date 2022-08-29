@@ -42,7 +42,7 @@ class Tooltip extends FlxGroup
 
 		footerText = new FlxText(panel.x + 10, descriptionText.y + descriptionText.frameHeight - 10, fieldWidth, footer, 16);
 		footerText.font = "Roboto";
-		footerText.color = FlxColor.GREEN;
+		footerText.color = 0x00FF1E;
 		add(footerText);
 
 		hide();
@@ -72,9 +72,9 @@ class Tooltip extends FlxGroup
 		titleText.x = panel.x + 10;
 		titleText.y = panel.y + 10;
 		descriptionText.x = panel.x + 10;
-		descriptionText.y = titleText.y + titleText.frameHeight + 10;
+		descriptionText.y = titleText.y + titleText.height + 10;
 		footerText.x = panel.x + 10;
-		footerText.y = descriptionText.y + descriptionText.frameHeight + 10;
-		panel.makeGraphic(fieldWidth + 15, Std.int((footerText.y + footerText.frameHeight) - panel.y + 5), FlxColor.GRAY);
+		footerText.y = descriptionText.y + descriptionText.height + 10;
+		panel.makeGraphic(fieldWidth + 15, Std.int((footerText.y + footerText.height) - panel.y + 5), FlxColor.GRAY);
 	}
 }
